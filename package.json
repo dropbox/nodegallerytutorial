@@ -10,9 +10,12 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "express-session": "^1.15.6",
+    "express-sessions": "^1.0.6",
     "hbs": "~4.0.1",
     "morgan": "~1.8.1",
     "node-cache": "^4.1.1",
+    "redis": "^2.8.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "serve-favicon": "~2.4.2"

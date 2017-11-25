@@ -10,6 +10,33 @@ var users = require('./routes/users');
 
 var app = express();
 
+//session management variables
+var config = require('./config');
+var redis = require('redis');
+var client = redis.createClient();
+var crypto = require('crypto');
+var session = require('express-session');
+
+
+//initialize session
+var sess = {
+	secret: config.SESSION_ID_SECRET,
+  cookie: {}, //add empty cookie to the session by default
+  resave: false,
+  saveUninitialized: true,
+  genid: (req) => {
+  	return crypto.randomBytes(16).toString('hex');;
+  },
+  store: new (require('express-sessions'))({
+  	storage: 'redis',
+      instance: client, // optional 
+      collection: 'sessions' // optional 
+  })
+}
+
+app.use(session(sess));
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
