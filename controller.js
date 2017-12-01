@@ -10,20 +10,29 @@ var mycache = new NodeCache();
 //steps 1,2,3
 module.exports.home = async (req,res,next)=>{    
 
-	//let token = mycache.get("aTempTokenKey");
-	let token = req.session.token;
-
+  let token = req.session.token;
   if(token){
     try{
+
       let paths = await getLinksAsync(token); 
-      res.render('gallery', { imgs: paths, layout:false});
+
+      if(paths.length>0){
+        res.render('gallery', { imgs: paths, layout:false});
+      }else{
+        //if no images, ask user to upload some
+        res.render('empty', {layout:false});
+      }    
+
     }catch(error){
       return next(new Error("Error getting images from Dropbox"));
     }
+
   }else{
-  	res.redirect('/login');
+    res.redirect('/login');
   }
-}  
+}
+
+
 
 //steps 4,5,6
 module.exports.login = (req,res,next)=>{
@@ -98,6 +107,28 @@ module.exports.oauthredirect = async (req,res,next)=>{
 function regenerateSessionAsync(req){
   return new Promise((resolve,reject)=>{
     req.session.regenerate((err)=>{
+      err ? reject(err) : resolve();
+    });
+  });
+}
+
+
+
+module.exports.logout = async (req,res,next)=>{
+  try{
+
+    await destroySessionAsync(req);
+    res.redirect("/login");
+
+  }catch(error){
+    return next(new Error('error logging out. '+error.message));
+  }  
+}
+
+//Returns a promise that fulfills when a session is destroyed
+function destroySessionAsync(req){
+  return new Promise((resolve,reject)=>{
+    req.session.destroy((err)=>{
       err ? reject(err) : resolve();
     });
   });
