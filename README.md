@@ -299,7 +299,7 @@ For the steps 1,2 and 3 in the flow above, modify the *home* method in the **con
     NodeCache = require( "node-cache" );
     var mycache = new NodeCache();
     
-    //steps 1,2,3//steps 1,2,3
+    //steps 1,2,3
     module.exports.home = (req,res,next)=>{    
         let token = mycache.get("aTempTokenKey");
         if(token){
