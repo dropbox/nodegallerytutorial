@@ -127,7 +127,23 @@ module.exports.logout = async (req,res,next)=>{
 
 //Returns a promise that fulfills when a session is destroyed
 function destroySessionAsync(req){
-  return new Promise((resolve,reject)=>{
+  return new Promise(async (resolve,reject)=>{
+
+    try{
+
+    //First ensure token gets revoked in Dropbox.com
+      let options={
+        url: config.DBX_API_DOMAIN + config.DBX_TOKEN_REVOKE_PATH, 
+        headers:{"Authorization":"Bearer "+req.session.token},
+        method: 'POST'
+      }
+      let result = await rp(options);
+
+    }catch(error){
+      reject(new Error('error destroying token. '));
+    }  
+
+    //then destroy the session
     req.session.destroy((err)=>{
       err ? reject(err) : resolve();
     });
