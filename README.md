@@ -122,21 +122,24 @@ A template generates HTML code on the fly before it gets sent to the client.  Ou
  
  **routes/index.js**
 
-    //first add the reference to the controller
-    var controller = require('../controller');
-    
-    /* GET home page. */
-    router.get('/', controller.home);
-    
+```javascript
+//first add the reference to the controller
+var controller = require('../controller');
+
+/* GET home page. */
+router.get('/', controller.home);
+```
 
  3.  Add the controller:  add the implementation of the endpoint in the controller.  If you haven’t, create a **controller.js** file at the root level and add the following code.
  
 **controller.js**
 
-    module.exports.home = (req,res,next)=>{
-      var paths = ['images/a.jpg','images/b.jpg','images/c.jpg'];              
-      res.render('gallery', { imgs: paths, layout:false});
-    };
+```javascript
+module.exports.home = (req,res,next)=>{
+  var paths = ['images/a.jpg','images/b.jpg','images/c.jpg'];              
+  res.render('gallery', { imgs: paths, layout:false});
+};
+```
 
  
 The `res.render` gets two arguments: the first is the name of the template (which we have not created yet) and the second is a JSON object that will be passed to the template engine. In this case, we will pass our paths array as imgs and the layout:false will ensure that handlebars doesn’t use the template layout.
@@ -166,20 +169,22 @@ You can see in the body part that we iterate through the `imgs` object passed cr
  
 **public/javascripts/page.js**
 
-     jQuery(document).ready(function(){
-          Galleria.loadTheme('/galleria/themes/classic/galleria.classic.min.js');
-          Galleria.run('.galleria');
-    });
-
+```javascript
+ jQuery(document).ready(function(){
+      Galleria.loadTheme('/galleria/themes/classic/galleria.classic.min.js');
+      Galleria.run('.galleria');
+});
+```
  
 **public/stylesheets/page.css** 
 
-    .galleria{
-        max-width: 100%;
-        height: 700px;
-        margin: 0 auto;
-    }
-
+```css
+.galleria{
+    max-width: 100%;
+    height: 700px;
+    margin: 0 auto;
+}
+```
  
 
 🎯 The source code at this point can be found in [this link](https://github.com/dropbox/dbximages/tree/frontendonly)
@@ -264,16 +269,17 @@ First we need a number of configuration items in the **config.js** file at the r
 
  **config.js**
 
-    module.exports = {
-      DBX_API_DOMAIN: 'https://api.dropboxapi.com',
-      DBX_OAUTH_DOMAIN: 'https://www.dropbox.com',
-      DBX_OAUTH_PATH: '/oauth2/authorize',
-      DBX_TOKEN_PATH: '/oauth2/token',
-      DBX_APP_KEY:'<appkey_in_dropbox_console>',
-      DBX_APP_SECRET:'<appsecret_in_dropbox_console>', 
-      OAUTH_REDIRECT_URL:"http://localhost:3000/oauthredirect",
-    }
-
+```javascript
+module.exports = {
+  DBX_API_DOMAIN: 'https://api.dropboxapi.com',
+  DBX_OAUTH_DOMAIN: 'https://www.dropbox.com',
+  DBX_OAUTH_PATH: '/oauth2/authorize',
+  DBX_TOKEN_PATH: '/oauth2/token',
+  DBX_APP_KEY:'<appkey_in_dropbox_console>',
+  DBX_APP_SECRET:'<appsecret_in_dropbox_console>', 
+  OAUTH_REDIRECT_URL:"http://localhost:3000/oauthredirect",
+}
+```
  
 
 🛑 ⚠️  If you are using a version control system such as git at this point, remember the Dropbox key/secret will be hard coded in some version of your code, which is especially bad if you are storing it on a public repository.  If that is the case, consider using **dotenv** library along with the .**gitignore** file explained on section 7.
@@ -293,41 +299,42 @@ For the steps 1,2 and 3 in the flow above, modify the *home* method in the **con
  
 **controller.js**
 
-    const 
-    crypto = require('crypto'),
-    config = require('./config'),
-    NodeCache = require( "node-cache" );
-    var mycache = new NodeCache();
-    
-    //steps 1,2,3
-    module.exports.home = (req,res,next)=>{    
-        let token = mycache.get("aTempTokenKey");
-        if(token){
-            let paths = ['images/a.jpg','images/b.jpg','images/c.jpg'];              
-            res.render('gallery', { imgs: paths });
-        }else{
-            res.redirect('/login');
-        }
-    }
-    
-    //steps 4,5,6
-    module.exports.login = (req,res,next)=>{
-        
-        //create a random state value
-        let state = crypto.randomBytes(16).toString('hex');
-         
-        //Save state and temporarysession for 10 mins
-        mycache.set(state, "aTempSessionValue", 600);
-         
-        let dbxRedirect= config.DBX_OAUTH_DOMAIN 
-                + config.DBX_OAUTH_PATH 
-                + "?response_type=code&client_id="+config.DBX_APP_KEY
-                + "&redirect_uri="+config.OAUTH_REDIRECT_URL 
-                + "&state="+state;
-        
-        res.redirect(dbxRedirect);
-    }
+```javascript
+const 
+crypto = require('crypto'),
+config = require('./config'),
+NodeCache = require( "node-cache" );
+var mycache = new NodeCache();
 
+//steps 1,2,3
+module.exports.home = (req,res,next)=>{    
+    let token = mycache.get("aTempTokenKey");
+    if(token){
+        let paths = ['images/a.jpg','images/b.jpg','images/c.jpg'];              
+        res.render('gallery', { imgs: paths });
+    }else{
+        res.redirect('/login');
+    }
+}
+
+//steps 4,5,6
+module.exports.login = (req,res,next)=>{
+    
+    //create a random state value
+    let state = crypto.randomBytes(16).toString('hex');
+     
+    //Save state and temporarysession for 10 mins
+    mycache.set(state, "aTempSessionValue", 600);
+     
+    let dbxRedirect= config.DBX_OAUTH_DOMAIN 
+            + config.DBX_OAUTH_PATH 
+            + "?response_type=code&client_id="+config.DBX_APP_KEY
+            + "&redirect_uri="+config.OAUTH_REDIRECT_URL 
+            + "&state="+state;
+    
+    res.redirect(dbxRedirect);
+}
+```
 
 Now we need to list the login endpoint in the **routes/index.js** , so add the following line.
 
@@ -369,48 +376,50 @@ Now add one more method to the controller with the logic to exchange the code vi
 
 **controller.js**
 
-    //add to the variable definition section on the top
-    rp = require('request-promise');
-    
-    //steps 8-12
-    module.exports.oauthredirect = async (req,res,next)=>{
-    
-      if(req.query.error_description){
-        return next( new Error(req.query.error_description));
-      } 
-    
-      let state= req.query.state;
-      if(!mycache.get(state)){
-        return next(new Error("session expired or invalid state"));
-      } 
-    
-      //Exchange code for token
-      if(req.query.code ){
-      
-        let options={
-          url: config.DBX_API_DOMAIN + config.DBX_TOKEN_PATH, 
-              //build query string
-          qs: {'code': req.query.code, 
-          'grant_type': 'authorization_code', 
-          'client_id': config.DBX_APP_KEY, 
-          'client_secret':config.DBX_APP_SECRET,
-          'redirect_uri':config.OAUTH_REDIRECT_URL}, 
-          method: 'POST',
-          json: true }
-    
-        try{
-    
-          let response = await rp(options);
-    
-          //we will replace later cache with a proper storage
-          mycache.set("aTempTokenKey", response.access_token, 3600);
-          res.redirect("/");
-    
-        }catch(error){
-          return next(new Error('error getting token. '+error.message));
-        }        
-      }
-    }
+```javascript
+//add to the variable definition section on the top
+rp = require('request-promise');
+
+//steps 8-12
+module.exports.oauthredirect = async (req,res,next)=>{
+
+  if(req.query.error_description){
+    return next( new Error(req.query.error_description));
+  } 
+
+  let state= req.query.state;
+  if(!mycache.get(state)){
+    return next(new Error("session expired or invalid state"));
+  } 
+
+  //Exchange code for token
+  if(req.query.code ){
+  
+    let options={
+      url: config.DBX_API_DOMAIN + config.DBX_TOKEN_PATH, 
+          //build query string
+      qs: {'code': req.query.code, 
+      'grant_type': 'authorization_code', 
+      'client_id': config.DBX_APP_KEY, 
+      'client_secret':config.DBX_APP_SECRET,
+      'redirect_uri':config.OAUTH_REDIRECT_URL}, 
+      method: 'POST',
+      json: true }
+
+    try{
+
+      let response = await rp(options);
+
+      //we will replace later cache with a proper storage
+      mycache.set("aTempTokenKey", response.access_token, 3600);
+      res.redirect("/");
+
+    }catch(error){
+      return next(new Error('error getting token. '+error.message));
+    }        
+  }
+}
+```
 
 The beauty of using the **request-promise** library and ES7 **async await** is that we can write our code as if it was all synchronous while this code will not actually block the server.  The **await** indicator will simply yield until the `rp(options)` call has a returned a value (or error) and then it will be picked up again.  Notice that the function has to be marked **async** for this to work.  If the promise fails, it will be captured by the catch and we pass it to the app to handle it, so it is pretty safe.
 
@@ -448,114 +457,120 @@ First, you need to add a couple configuration fields
 
 **config.js**
 
-    DBX_LIST_FOLDER_PATH:'/2/files/list_folder',
-    DBX_LIST_FOLDER_CONTINUE_PATH:'/2/files/list_folder/continue',
-    DBX_GET_TEMPORARY_LINK_PATH:'/2/files/get_temporary_link',
+```javascript
+DBX_LIST_FOLDER_PATH:'/2/files/list_folder',
+DBX_LIST_FOLDER_CONTINUE_PATH:'/2/files/list_folder/continue',
+DBX_GET_TEMPORARY_LINK_PATH:'/2/files/get_temporary_link',
+```
 
 This is the code you need to add to controllers.js
 
 **controller.js**
 
-    /*Gets temporary links for a set of files in the root folder of the app
-    It is a two step process:
-    1.  Get a list of all the paths of files in the folder
-    2.  Fetch a temporary link for each file in the folder */
-    async function getLinksAsync(token){
-    
-      //List images from the root of the app folder
-      let result= await listImagePathsAsync(token,'');
-    
-      //Get a temporary link for each of those paths returned
-      let temporaryLinkResults= await getTemporaryLinksForPathsAsync(token,result.paths);
-    
-      //Construct a new array only with the link field
-      var temporaryLinks = temporaryLinkResults.map(function (entry) {
-        return entry.link;
-      });
-    
-      return temporaryLinks;
-    }
-    
-    
-    /*
-    Returns an object containing an array with the path_lower of each 
-    image file and if more files a cursor to continue */
-    async function listImagePathsAsync(token,path){
-    
-      let options={
-        url: config.DBX_API_DOMAIN + config.DBX_LIST_FOLDER_PATH, 
-        headers:{"Authorization":"Bearer "+token},
-        method: 'POST',
-        json: true ,
-        body: {"path":path}
-      }
-    
-      try{
-        //Make request to Dropbox to get list of files
-        let result = await rp(options);
-    
-        //Filter response to images only
-        let entriesFiltered= result.entries.filter(function(entry){
-          return entry.path_lower.search(/\.(gif|jpg|jpeg|tiff|png)$/i) > -1;
-        });        
-    
-        //Get an array from the entries with only the path_lower fields
-        var paths = entriesFiltered.map(function (entry) {
-          return entry.path_lower;
-        });
-    
-        //return a cursor only if there are more files in the current folder
-        let response= {};
-        response.paths= paths;
-        if(result.hasmore) response.cursor= result.cursor;        
-        return response;
-    
-      }catch(error){
-        return next(new Error('error listing folder. '+error.message));
-      }        
-    } 
-    
-    
-    //Returns an array with temporary links from an array with file paths
-    function getTemporaryLinksForPathsAsync(token,paths){
-    
-      var promises = [];
-      let options={
-        url: config.DBX_API_DOMAIN + config.DBX_GET_TEMPORARY_LINK_PATH, 
-        headers:{"Authorization":"Bearer "+token},
-        method: 'POST',
-        json: true
-      }
-    
-      //Create a promise for each path and push it to an array of promises
-      paths.forEach((path_lower)=>{
-        options.body = {"path":path_lower};
-        promises.push(rp(options));
-      });
-    
-      //returns a promise that fullfills once all the promises in the array complete or one fails
-      return Promise.all(promises);
-    }
+```javascript
+/*Gets temporary links for a set of files in the root folder of the app
+It is a two step process:
+1.  Get a list of all the paths of files in the folder
+2.  Fetch a temporary link for each file in the folder */
+async function getLinksAsync(token){
+
+  //List images from the root of the app folder
+  let result= await listImagePathsAsync(token,'');
+
+  //Get a temporary link for each of those paths returned
+  let temporaryLinkResults= await getTemporaryLinksForPathsAsync(token,result.paths);
+
+  //Construct a new array only with the link field
+  var temporaryLinks = temporaryLinkResults.map(function (entry) {
+    return entry.link;
+  });
+
+  return temporaryLinks;
+}
+
+
+/*
+Returns an object containing an array with the path_lower of each 
+image file and if more files a cursor to continue */
+async function listImagePathsAsync(token,path){
+
+  let options={
+    url: config.DBX_API_DOMAIN + config.DBX_LIST_FOLDER_PATH, 
+    headers:{"Authorization":"Bearer "+token},
+    method: 'POST',
+    json: true ,
+    body: {"path":path}
+  }
+
+  try{
+    //Make request to Dropbox to get list of files
+    let result = await rp(options);
+
+    //Filter response to images only
+    let entriesFiltered= result.entries.filter(function(entry){
+      return entry.path_lower.search(/\.(gif|jpg|jpeg|tiff|png)$/i) > -1;
+    });        
+
+    //Get an array from the entries with only the path_lower fields
+    var paths = entriesFiltered.map(function (entry) {
+      return entry.path_lower;
+    });
+
+    //return a cursor only if there are more files in the current folder
+    let response= {};
+    response.paths= paths;
+    if(result.hasmore) response.cursor= result.cursor;        
+    return response;
+
+  }catch(error){
+    return next(new Error('error listing folder. '+error.message));
+  }        
+} 
+
+
+//Returns an array with temporary links from an array with file paths
+function getTemporaryLinksForPathsAsync(token,paths){
+
+  var promises = [];
+  let options={
+    url: config.DBX_API_DOMAIN + config.DBX_GET_TEMPORARY_LINK_PATH, 
+    headers:{"Authorization":"Bearer "+token},
+    method: 'POST',
+    json: true
+  }
+
+  //Create a promise for each path and push it to an array of promises
+  paths.forEach((path_lower)=>{
+    options.body = {"path":path_lower};
+    promises.push(rp(options));
+  });
+
+  //returns a promise that fullfills once all the promises in the array complete or one fails
+  return Promise.all(promises);
+}
+```
 
 
 Finally, modify again the home method in the **controller.js** to look like the code below.  First of all, you will notice we added an async modifier as we use an await call to get the links from Dropbox from the code above.  
 
 **controller.js**  .home method
 
-    //steps 1,2,3
-    module.exports.home = async (req,res,next)=>{    
-      let token = mycache.get("aTempTokenKey");
-      if(token){
-        try{
-          let paths = await getLinksAsync(token); 
-          res.render('gallery', { imgs: paths, layout:false});
-        }catch(error){
-          return next(new Error("Error getting images from Dropbox"));
-        }
-      }else{
-      res.redirect('/login');
-      }
-    }          
+```javascript
+//steps 1,2,3
+module.exports.home = async (req,res,next)=>{    
+  let token = mycache.get("aTempTokenKey");
+  if(token){
+    try{
+      let paths = await getLinksAsync(token); 
+      res.render('gallery', { imgs: paths, layout:false});
+    }catch(error){
+      return next(new Error("Error getting images from Dropbox"));
+    }
+  }else{
+  res.redirect('/login');
+  }
+}          
+```
 
 You can run the server and test it.  You should be able to see the images from the folder in your gallery after login into Dropbox.
 
@@ -618,28 +633,30 @@ And now initialize the libraries in the app.js file where any middleware gets co
 
 **app.js**
 
-    var config = require('./config');
-    var redis = require('redis');
-    var client = redis.createClient();
-    var crypto = require('crypto');
-    var session = require('express-session');
-    
-    //initialize session
-    var sess = {
-        secret: config.SESSION_ID_SECRET,
-        cookie: {}, //add empty cookie to the session by default
-        resave: false,
-        saveUninitialized: true,
-        genid: (req) => {
-                return crypto.randomBytes(16).toString('hex');;
-              },
-        store: new (require('express-sessions'))({
-            storage: 'redis',
-            instance: client, // optional 
-            collection: 'sessions' // optional 
-        })
-    }
-    app.use(session(sess));
+```javascript
+var config = require('./config');
+var redis = require('redis');
+var client = redis.createClient();
+var crypto = require('crypto');
+var session = require('express-session');
+
+//initialize session
+var sess = {
+    secret: config.SESSION_ID_SECRET,
+    cookie: {}, //add empty cookie to the session by default
+    resave: false,
+    saveUninitialized: true,
+    genid: (req) => {
+            return crypto.randomBytes(16).toString('hex');;
+          },
+    store: new (require('express-sessions'))({
+        storage: 'redis',
+        instance: client, // optional 
+        collection: 'sessions' // optional 
+    })
+}
+app.use(session(sess));
+```
 
 Finally,  we will make 5 changes in the controller: 1 in the login method,  1 in the home method, 2 in the oauthredirect method and we will also add a new method to regenerate a session.
 
@@ -648,48 +665,54 @@ Finally,  we will make 5 changes in the controller: 1 in the login method,  1 in
 
 **controller.js login method**
 
-      // mycache.set(state, "aTempSessionValue", 600);
-      mycache.set(state, req.sessionID, 600);
+```javascript
+// mycache.set(state, "aTempSessionValue", 600);
+mycache.set(state, req.sessionID, 600);
+```
 
 
 2. Instead of reading the token from cache, read it from the session.
 
 **controller.js home method**
 
-    //let token = mycache.get("aTempTokenKey");
-    let token = req.session.token;
-
+```javascript
+//let token = mycache.get("aTempTokenKey");
+let token = req.session.token;
+```
 
 3.  In the oauthredirect, now we actually make sure that the state value we have just received from Dropbox is the same we previously stored.
 
 **controller.js** oauthredirect **method**
 
-    //if(!mycache.get(state)){
-    if(mycache.get(state)!=req.sessionID){
-
+```javascript
+//if(!mycache.get(state)){
+if(mycache.get(state)!=req.sessionID){
+```
 
 4.  For security reasons, whenever we get a new token, we regenerate the session and then we save it.  Let us use a method called  regenerateSessionAsync that receives the request.
 
 **controller.js** oauthredirect **method**
 
-    //mycache.set("aTempTokenKey", response.access_token, 3600);
-    await regenerateSessionAsync(req);
-    req.session.token = response.access_token;
-
+```javascript
+//mycache.set("aTempTokenKey", response.access_token, 3600);
+await regenerateSessionAsync(req);
+req.session.token = response.access_token;
+```
 
 5. Now we implement the regenerateSessionAsync method.  This method simply wraps the generation of the session in a Promise.  We do this because we don’t want to mix awaits and callbacks.  If we had to do this more often we would use a wrapping library, but this is the only time, so we do it in the rough way.   💡 you can read more about asynchronous calls [here](https://strongloop.com/strongblog/async-error-handling-expressjs-es7-promises-generators/)
 
 **controller.js** regenerateSessionAsync **method**
 
-    //Returns a promise that fulfills when a new session is created
-    function regenerateSessionAsync(req){
-      return new Promise((resolve,reject)=>{
-        req.session.regenerate((err)=>{
-          err ? reject(err) : resolve();
-        });
-      });
-    }
-
+```javascript
+//Returns a promise that fulfills when a new session is created
+function regenerateSessionAsync(req){
+  return new Promise((resolve,reject)=>{
+    req.session.regenerate((err)=>{
+      err ? reject(err) : resolve();
+    });
+  });
+}
+```
 
 And you can now run with `npm start`.
 🎯 The source code at this point can be found in [this link](https://github.com/dropbox/dbximages/tree/backendwithsession)
@@ -755,21 +778,23 @@ Then, let us add a .env file to the root of the project
 Finally, replace the whole config file to the code below.  Notice how we are reading several variables from the environment (which is loaded at startup from the .env file)
 **config.js**
 
-    require('dotenv').config({silent: true});
-    
-    module.exports = {
-            DBX_API_DOMAIN: 'https://api.dropboxapi.com',
-            DBX_OAUTH_DOMAIN: 'https://www.dropbox.com',
-            DBX_OAUTH_PATH: '/oauth2/authorize',
-            DBX_TOKEN_PATH: '/oauth2/token',
-            DBX_LIST_FOLDER_PATH:'/2/files/list_folder',
-            DBX_LIST_FOLDER_CONTINUE_PATH:'/2/files/list_folder/continue',
-            DBX_GET_TEMPORARY_LINK_PATH:'/2/files/get_temporary_link',
-            DBX_APP_KEY:process.env.DBX_APP_KEY,
-            DBX_APP_SECRET:process.env.DBX_APP_SECRET, 
-            OAUTH_REDIRECT_URL:process.env.OAUTH_REDIRECT_URL,
-            SESSION_ID_SECRET:process.env.SESSION_ID_SECRET,
-    }
+```javascript
+require('dotenv').config({silent: true});
+
+module.exports = {
+        DBX_API_DOMAIN: 'https://api.dropboxapi.com',
+        DBX_OAUTH_DOMAIN: 'https://www.dropbox.com',
+        DBX_OAUTH_PATH: '/oauth2/authorize',
+        DBX_TOKEN_PATH: '/oauth2/token',
+        DBX_LIST_FOLDER_PATH:'/2/files/list_folder',
+        DBX_LIST_FOLDER_CONTINUE_PATH:'/2/files/list_folder/continue',
+        DBX_GET_TEMPORARY_LINK_PATH:'/2/files/get_temporary_link',
+        DBX_APP_KEY:process.env.DBX_APP_KEY,
+        DBX_APP_SECRET:process.env.DBX_APP_SECRET, 
+        OAUTH_REDIRECT_URL:process.env.OAUTH_REDIRECT_URL,
+        SESSION_ID_SECRET:process.env.SESSION_ID_SECRET,
+}
+```
 
 Since those variables won’t exist on Heroku, we need to manually add them.  So in your app in Heroku, click on **Settings** and then on **Reveal config vars**
 
@@ -844,8 +869,10 @@ There is one more step you need to change in your code for Redis to work. You ne
 
 **app.js**
 
-    //var client = redis.createClient();
-    var client = redis.createClient(process.env.REDIS_URL);
+```javascript
+//var client = redis.createClient();
+var client = redis.createClient(process.env.REDIS_URL);
+```
 
 You can see it yourself in the settings page of the Heroku app if you click on Reveal config vars
 
@@ -929,28 +956,30 @@ And add the following code to the app.js file to set the headers.  Notice that w
 
 **app.js**
 
-    var helmet = require('helmet');
-    
-    //Headers security!!
-    app.use(helmet());
-    
-    // Implement CSP with Helmet 
-    
-    app.use(helmet.contentSecurityPolicy({
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'","https://ajax.googleapis.com/"],
-        styleSrc: ["'self'"], 
-        imgSrc: ["'self'","https://dl.dropboxusercontent.com"],  
-        mediaSrc: ["'none'"],  
-        frameSrc: ["'none'"]  
-      },
-    
-        // Set to true if you want to blindly set all headers: Content-Security-Policy, 
-        // X-WebKit-CSP, and X-Content-Security-Policy. 
-        setAllHeaders: true
-    
-    }));
+```javascript
+var helmet = require('helmet');
+
+//Headers security!!
+app.use(helmet());
+
+// Implement CSP with Helmet 
+
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'","https://ajax.googleapis.com/"],
+    styleSrc: ["'self'"], 
+    imgSrc: ["'self'","https://dl.dropboxusercontent.com"],  
+    mediaSrc: ["'none'"],  
+    frameSrc: ["'none'"]  
+  },
+
+    // Set to true if you want to blindly set all headers: Content-Security-Policy, 
+    // X-WebKit-CSP, and X-Content-Security-Policy. 
+    setAllHeaders: true
+
+}));
+```
 
 With this we have secured the headers now 🤠 
 
@@ -961,11 +990,13 @@ Let us know fix the cookie transport issue.  The best thing to do here is to ena
 After the sess variable is initialized (before the app.use) in the apps.js add the following code 
 **app.js**
 
-    //cookie security for production: only via https
-    if (app.get('env') === 'production') {
-        app.set('trust proxy', 1) // trust first proxy
-        sess.cookie.secure = true // serve secure cookies
-    }
+```javascript
+//cookie security for production: only via https
+if (app.get('env') === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+    sess.cookie.secure = true // serve secure cookies
+}
+```
 
 It is important to do the *trust the first proxy* for Heroku as any requests enters via https to Heroku but the direct internal call to our middleware is http via some load balancer.
 
