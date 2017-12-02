@@ -1056,12 +1056,13 @@ You could make that error page look nicer.
 
 #  10.  Try it yourself
 
-https://dbximgs.herokuapp.com/
+[https://dbximgs.herokuapp.com](https://dbximgs.herokuapp.com)
+
 
 🤓 After you hit the link, give it a couple minutes since free Heroku instances are dormant by default and need to be restarted.
 
 You can revoke the token and delete the session using
-https://dbximgs.herokuapp.com/logout
+[https://dbximgs.herokuapp.com/logout](https://dbximgs.herokuapp.com/logout)
 
 
 # License
