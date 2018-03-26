@@ -148,22 +148,24 @@ Now create the template  /views/gallery.hbs and copy this code
 
 **/views/gallery.hbs**
 
-    <!DOCTYPE html>
-    <html>
-    <head>                       
-          <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
-          <script src="/galleria/galleria-1.5.7.min.js"></script>
-          <script type='text/javascript' src='/javascripts/page.js'></script>
-          <link rel="stylesheet" href="/stylesheets/page.css">
-    </head>
-    <body>
-          <div class="galleria">
-            {{#each imgs}}
-                <img src="{{this}}">
-            {{/each}}
-          </div>
-    </body>
-    </html>
+```html
+<!DOCTYPE html>
+<html>
+<head>                       
+      <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+      <script src="/galleria/galleria-1.5.7.min.js"></script>
+      <script type='text/javascript' src='/javascripts/page.js'></script>
+      <link rel="stylesheet" href="/stylesheets/page.css">
+</head>
+<body>
+      <div class="galleria">
+        {{#each imgs}}
+            <img src="{{this}}">
+        {{/each}}
+      </div>
+</body>
+</html>
+```
 
 You can see in the body part that we iterate through the `imgs` object passed creating HTML code with an image tag per array element. Let’s now add the css and JavaScript file referenced in the header above.
  
