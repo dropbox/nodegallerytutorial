@@ -148,7 +148,7 @@ Now create the template  /views/gallery.hbs and copy this code
 
 **/views/gallery.hbs**
 
-```raw
+```html
 <!DOCTYPE html>
 <html>
 <head>                       
@@ -159,9 +159,11 @@ Now create the template  /views/gallery.hbs and copy this code
 </head>
 <body>
       <div class="galleria">
+      {% raw %}
         {{#each imgs}}
             <img src="{{this}}">
         {{/each}}
+      {% endraw %}
       </div>
 </body>
 </html>
