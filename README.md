@@ -148,7 +148,7 @@ Now create the template  /views/gallery.hbs and copy this code
 
 **/views/gallery.hbs**
 
-```html
+```raw
 <!DOCTYPE html>
 <html>
 <head>                       
