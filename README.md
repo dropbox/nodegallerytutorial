@@ -45,7 +45,7 @@ Now create a project called *dbximgs* using handlebars template engine
  
 This creates a folder called dbximgs with the structure below.  Notice, the dependencies of the project are not yet installed, only a file structure has been created.
 
-![Project structure created by  Express generator](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1504713067886_Picture1.png)
+![Project structure created by  Express generator](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/1.png?raw=true)
 
 
  These are the main items to highlight on that structure
@@ -73,7 +73,7 @@ Once the installation is complete, run
 Go to your browser and enter [http://localhost:3000](http://localhost:3000) on the address bar and you will see your server running:
  
 
-![Bare Express server running](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1511593637002_Screen+Shot+2017-11-24+at+11.06.50+PM.png)
+![Bare Express server running](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/2.png?raw=true)
 
 # 2.  Front end and back end
 
@@ -106,7 +106,7 @@ First download the Galleria library [from this link](https://galleria.io/get-sta
 Now copy the galleria folder inside the **/public** folder and it should look like this
  
 
-![Public folder after decompressing galleria](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1511593965387_Screen+Shot+2017-11-24+at+11.12.23+PM.png)
+![Public folder after decompressing galleria](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/3.png?raw=true)
 
 
  
@@ -201,7 +201,7 @@ Now let us run the server with
 And in your browser navigate to [http://localhost:3000](http://localhost:3000/gallery) and it will look like this
 
 
-![Web Server running Galleria using sample images](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1511595276605_Screen+Shot+2017-11-24+at+11.34.10+PM.png)
+![Web Server running Galleria using sample images](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/4.png?raw=true)
 
 
 Now that we have our front end running.  Let us do the back end part, which is the main focus of this tutorial.  
@@ -217,7 +217,7 @@ And click on **Create App**
 Then choose Dropbox API, App Folder,  put a name on your app and click on **Create App.**
  
 
-![Dropbox developer console](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1511595473361_Screen+Shot+2017-11-24+at+11.37.23+PM.png)
+![Dropbox developer console](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/5.png?raw=true)
 
 
 We chose **App folder** permission so the middleware can only read and write to a single folder to those users who authorize the app.
@@ -225,7 +225,7 @@ We chose **App folder** permission so the middleware can only read and write to 
 After this, you want to also enable additional users in this app, otherwise only you can use it.  In the settings page of your app you will find a button to do this.  
  
 
-![Enabling additional users for Dropbox app](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1504744450739_Picture6.png)
+![Enabling additional users for Dropbox app](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/6.png?raw=true)
 
 
  
@@ -244,7 +244,7 @@ Pre-register a redirect URL in the Dropbox admin console.  Temporarily we will u
 Also we we will not use implicit grant, so you can disable it.  
  
 
-![Adding a redirect url in Dropbox developer console](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1504744719928_Screen+Shot+2017-09-06+at+5.38.06+PM.png)
+![Adding a redirect url in Dropbox developer console](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/7.png?raw=true)
 
 
 💡 If you are interested in learning more about OAuth, this is a [good read](https://spring.io/blog/2011/11/30/cross-site-request-forgery-and-oauth2) 👍 
@@ -252,7 +252,7 @@ Also we we will not use implicit grant, so you can disable it.
 The whole authorization flow will have all the following steps which I will explain right after.
 
 
-![Whole OAuth code flow](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1512159552862_Authorization+Code+grant+flow+1.png)
+![Whole OAuth code flow](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/8.png?raw=true)
 
 1.  When a user calls the *home* `/` endpoint, the middleware retrieves a session for that specific user.  (we will first use a hardcoded value and a cache, but later we will use a proper library).
 2.  The middleware checks if there is an OAuth token already issued for that session.  In this case, it does not find any, so an authorization sequence is started. 
@@ -354,13 +354,13 @@ At this point, you can test it again by running
 and hitting http://localhost:3000 should forward to an authentication/authorization page like this
 
 
-![AOuth Authorization page](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1511646328467_Screen+Shot+2017-11-25+at+1.45.05+PM.png)
+![AOuth Authorization page](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/9.png?raw=true)
 
 
 Once you authorize, you will see an error as we have not added an endpoint to be redirected back, but take a look at the url, you will see there the **state** you sent and the **code** from Dropbox that you will use to get a token .
 
 
-![Redirect URL](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1511646659486_Screen+Shot+2017-11-25+at+1.50.42+PM.png)
+![Redirect URL](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/10.png?raw=true)
 
 ## Exchanging code for token
 
@@ -581,7 +581,7 @@ You can run the server and test it.  You should be able to see the images from t
 👁️ Make sure you have images in the folder created after you login to Dropbox and authorize the application.
 
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1511647438072_Screen+Shot+2017-11-25+at+2.03.30+PM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/11.png?raw=true)
 
 
 🎯 The source code at this point can be found in [this link](https://github.com/dropbox/dbximages/tree/backendnosession)
@@ -614,7 +614,7 @@ Once you unpack redis on your local machine, just go to the redis folder and run
 
 You don’t need to worry about configuration as this is only a local test instance, the production one will be using Heroku.  When it runs, it will look like this:
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1505834587527_Screen+Shot+2017-09-19+at+8.22.45+AM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/12.png?raw=true)
 
 
 We will also need the following Node libraries
@@ -726,7 +726,7 @@ And you can now run with `npm start`.
 
 **⚠️  While you will not be charged anything for following any of the steps below, provisioning the Redis database addin requires you to have a credit card on file on Heroku.  But again,** **we will be using only free tiers.**
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506475523604_Screen+Shot+2017-09-26+at+6.22.58+PM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/13.png?raw=true)
 
 
 
@@ -802,12 +802,12 @@ module.exports = {
 
 Since those variables won’t exist on Heroku, we need to manually add them.  So in your app in Heroku, click on **Settings** and then on **Reveal config vars**
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506525824434_Screen+Shot+2017-09-27+at+8.22.45+AM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/14.png?raw=true)
 
 
 Then manually add the variables with the proper values
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506526011795_Screen+Shot+2017-09-27+at+8.26.26+AM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/15.png?raw=true)
 
 
 👁️  Notice something important here.  We changed the OAUTH_REDIRECT_URL to https://dbximgs.herokuapp.com/oauthredirect.  In this field you need to put the name of your app in the following way:
@@ -818,7 +818,7 @@ Then manually add the variables with the proper values
 5.  As we are now using a different redirect URL for the authentication, we need to also add it to the [Dropbox app console.](https://www.dropbox.com/developers/apps/)
 
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506528126470_Screen+Shot+2017-09-27+at+9.01.35+AM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/16.png?raw=true)
 
 
 
@@ -853,7 +853,7 @@ It will look something like this
 7. We use Redis to store sessions and luckily there is a free Heroku addin that can be configured only with a few steps:
 
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506527275660_Screen+Shot+2017-09-27+at+8.43.51+AM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/17.png?raw=true)
 
 
 
@@ -866,7 +866,7 @@ It will look something like this
 
 Now you will see the addin in your app
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506527584364_Screen+Shot+2017-09-27+at+8.52.28+AM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/18.png?raw=true)
 
 
 There is one more step you need to change in your code for Redis to work. You need to add an environment variable when you create the database client in the app.js file.  When this runs locally, this value will be empty, but when Heroku calls it, it will add a variable it has added to our config vars when you deployed the plugin.
@@ -893,7 +893,7 @@ now run
 which will start the deploy and will show you something like this
 
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506559865116_Screen+Shot+2017-09-27+at+9.30.59+AM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/19.png?raw=true)
 
 
 You can also check the Heroku logs to make sure server is running correctly 
@@ -902,7 +902,7 @@ You can also check the Heroku logs to make sure server is running correctly
 
 Something like this means things are working fine
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506560215635_Screen+Shot+2017-09-27+at+5.55.03+PM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/20.png?raw=true)
 
 
 
@@ -911,7 +911,7 @@ Something like this means things are working fine
 If you are not sure of the link, you can start it from the Heroku console using the Open App button.  Or run the `heroku open` command in the console.
 
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506560336013_Screen+Shot+2017-09-27+at+5.58.35+PM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/21.png?raw=true)
 
 
 It will be something like this
@@ -1032,7 +1032,7 @@ so run
 and you will get a bunch of tables that look like this
 
 
-![](https://d2mxuefqeaa7sj.cloudfront.net/s_5BE384A0B772773EE7D3916BE412587034AC125EC6921B15EF4FEE7C88E3A55D_1506616546659_Screen+Shot+2017-09-28+at+9.35.27+AM.png)
+![](https://github.com/dropbox/nodegallerytutorial/blob/master/tutorial_resources/22.png?raw=true)
 
 
 As with Heroku we don’t actually push the **node_modules** package, it makes sense to patch those files that are directly stated in the **package.json** file by simply changing the version required.  But make sure you test in case there were major changes for that dependency.  Every time you push your code to Heroku, it runs the `npm install` command recreating the node_modules folder.
